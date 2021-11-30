@@ -1,72 +1,40 @@
-// linking from html world to javascript world
-const billAmount = document.querySelector("#bill-amount");
-const cashGiven = document.querySelector("#cash-given");
-const checkButton = document.querySelector("#check-button");
+const billamount = document.querySelector("#bill-amount");
+const cashgiven = document.querySelector("#cash-given");
+const checkbutton = document.querySelector("#check-button");
 const message = document.querySelector("#error-message");
 const noOfNotes = document.querySelectorAll(".no-of-notes");
-const nextButton = document.querySelector("#nextBtn");
-const cashGivenSection = document.querySelector('.cash-given-section')
-const notesSection = document.querySelector('.notes-section')
 
-// Total available notes stored in array
-const availableNotes = [2000, 500, 100, 20, 10, 5, 1]
+const availabelNote = [2000,500,200,100,50,20,10,1]
 
-// adding event listener to button
-
-checkButton.addEventListener("click", function validateBillAndCashAmount() {
-
+checkbutton.addEventListener("click" , function validateBillAmountAndCashAmount(){
     hideMessage();
-    
-      if (Number(billAmount.value) > 0) { 
-        
-             if (Number(cashGiven.value) >= Number(billAmount.value)) { 
-                  const amountToBeReturned = cashGiven.value - billAmount.value; 
-                  notesSection.style.display = 'block' 
-                  // calling calculateChange function  which is core processing part
-                  calculateChange(amountToBeReturned); 
-           } else {
-                    // calling showMessage function to show output to client
-                  showMessage("Cash amount given should be greater than or equal to bill amount")
-            }
+    if(billamount.value > 0){
+        if(cashgiven.value >= billamount.value){
+            const amountToBeReturned = cashgiven.value - billamount.value;
+            calculateChange(amountToBeReturned);
 
-    } else {
-                // calling showMessage function to show output to client
-            showMessage("Invalid bill amount");
+        }else{
+            showMessage("cash should be equal or greater than bill amount");
+        }
+
+    }else{
+        showMessage("Invalid amount");
     }
 });
 
-// adding event listener to next button
-
- nextButton.addEventListener("click",  ()=> {
-
-      if (billAmount.value > 0){
-              cashGivenSection.style.display = 'block'
-              message.innerText = ""   
-    } else {
-              showMessage("Invalid value") // calling a showMessage function
-              cashGivenSection.style.display = 'none'   
-              notesSection.style.display = 'none'     
-            }
-       
- });
-
-// core processing behind this project
-
-function calculateChange(amountToBeReturned) {
-    
-    for (let i = 0; i < availableNotes.length; i++) {
-        const numberOfNotes = Math.trunc(amountToBeReturned / availableNotes[i]); 
-        amountToBeReturned = amountToBeReturned % availableNotes[i];
+function calculateChange(amountToBeReturned){
+    for(let i=0;i<availabelNote.length;i++){
+        const numberOfNotes = Math.trunc(amountToBeReturned/availabelNote[i]);
+        amountToBeReturned = amountToBeReturned % availabelNote[i];
         noOfNotes[i].innerText = numberOfNotes;
+
     }
 }
 
-// function for showing or hiding output to client
-function hideMessage() {
+function hideMessage(){
     message.style.display = "none";
 }
-
-function showMessage(msg) {
+function showMessage(){
     message.style.display = "block";
-    message.innerText = msg;
+    message.innerText = "The bill amount should be greater than cash amount";
 }
