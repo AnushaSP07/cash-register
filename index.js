@@ -1,40 +1,72 @@
-const billamount = document.querySelector("#bill-amount");
-const cashgiven = document.querySelector("#cash-given");
-const checkbutton = document.querySelector("#check-button");
+// linking from html world to javascript world
+const billAmount = document.querySelector("#bill-amount");
+const cashGiven = document.querySelector("#cash-given");
+const checkButton = document.querySelector("#check-button");
 const message = document.querySelector("#error-message");
 const noOfNotes = document.querySelectorAll(".no-of-notes");
+const nextButton = document.querySelector("#nextBtn");
+const cashGivenSection = document.querySelector('.cash-given-section')
+const notesSection = document.querySelector('.notes-section')
 
-const availabelNote = [2000,500,200,100,50,20,10,1]
+// Total available notes stored in array
+const availableNotes = [2000, 500, 100, 20, 10, 5, 1]
 
-checkbutton.addEventListener("click" , function validateBillAmountAndCashAmount(){
+// adding event listener to button
+
+checkButton.addEventListener("click", function validateBillAndCashAmount() {
+
     hideMessage();
-    if(billamount.value > 0){
-        if(cashgiven.value >= billamount.value){
-            const amountToBeReturned = cashgiven.value - billamount.value;
-            calculateChange(amountToBeReturned);
+    
+      if (Number(billAmount.value) > 0) { 
+        
+             if (Number(cashGiven.value) >= Number(billAmount.value)) { 
+                  const amountToBeReturned = cashGiven.value - billAmount.value; 
+                  notesSection.style.display = 'block' 
+                  // calling calculateChange function  which is core processing part
+                  calculateChange(amountToBeReturned); 
+           } else {
+                    // calling showMessage function to show output to client
+                  showMessage("Cash amount given should be greater than or equal to bill amount")
+            }
 
-        }else{
-            showMessage("cash should be equal or greater than bill amount");
-        }
-
-    }else{
-        showMessage("Invalid amount");
+    } else {
+                // calling showMessage function to show output to client
+            showMessage("Invalid bill amount");
     }
 });
 
-function calculateChange(amountToBeReturned){
-    for(let i=0;i<availabelNote.length;i++){
-        const numberOfNotes = Math.trunc(amountToBeReturned/availabelNote[0]);
-        amountToBeReturned = amountToBeReturned % availabelNote[0];
-        noOfNotes[i].innerText = numberOfNotes;
+// adding event listener to next button
 
+ nextButton.addEventListener("click",  ()=> {
+
+      if (billAmount.value > 0){
+              cashGivenSection.style.display = 'block'
+              message.innerText = ""   
+    } else {
+              showMessage("Invalid value") // calling a showMessage function
+              cashGivenSection.style.display = 'none'   
+              notesSection.style.display = 'none'     
+            }
+       
+ });
+
+// core processing behind this project
+
+function calculateChange(amountToBeReturned) {
+    
+    for (let i = 0; i < availableNotes.length; i++) {
+        const numberOfNotes = Math.trunc(amountToBeReturned / availableNotes[i]); 
+        amountToBeReturned = amountToBeReturned % availableNotes[i];
+        noOfNotes[i].innerText = numberOfNotes;
     }
 }
 
-function hideMessage(){
+// function for showing or hiding output to client
+function hideMessage() {
     message.style.display = "none";
 }
-function showMessage(){
+
+function showMessage(msg) {
     message.style.display = "block";
-    message.innerText = "The bill amount should be greater than cash amount";
+    message.innerText = msg;
 }
